@@ -23,7 +23,6 @@ public class ucakhareket : MonoBehaviour
     private void Update()
     {
         float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
 
         // Space tuþuna basýldýðýnda yukarý çýk
         if (Input.GetKey(KeyCode.Space))
@@ -40,16 +39,16 @@ public class ucakhareket : MonoBehaviour
             yPozisyonu = Mathf.Lerp(yPozisyonu, minYukseklik, geriDonusHizi * Time.deltaTime);
         }
 
-        // Z eksenindeki hareketi kontrol et
-        float distanceTravelledZ = transform.position.z - previousZPosition;  // Z eksenindeki mesafeyi hesapla
-        if (Mathf.Abs(distanceTravelledZ) >= 10f)  // 10 birimlik mesafe geçtiðinde
+        // Z eksenindeki hareketi kontrol et (hýzý arttýrma mekaniði)
+        float distanceTravelledZ = transform.position.z - previousZPosition;
+        if (Mathf.Abs(distanceTravelledZ) >= 10f)
         {
-            hareketHizi += hizArtisKademesi;  // Hýzý arttýr
-            previousZPosition = transform.position.z;  // Z pozisyonunu güncelle
+            hareketHizi += hizArtisKademesi;
+            previousZPosition = transform.position.z;
         }
 
-        // Yatay ve ileri-geri hareket
-        Vector3 hareket = new Vector3(horizontal, 0f, vertical);
+        // Yatay ve ileri-geri hareket (artýk ileri-geri kontrol yok, hep ileri gidiyor)
+        Vector3 hareket = new Vector3(horizontal, 0f, 1f); // Z ekseninde hep ileri gitmesi için '1f' sabit
 
         // Yeni pozisyonu oluþtur
         Vector3 yeniPozisyon = transform.position + hareket * hareketHizi * Time.deltaTime;
