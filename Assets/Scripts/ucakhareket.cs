@@ -19,16 +19,23 @@ public class ucakhareket : MonoBehaviour
     private float mevcutEgilmeX = 0f;
     private float mevcutEgilmeZ = 0f;
 
-    private float baslangicZ; // 🚀 Uçağın başlangıç Z konumunu tutacak
-    public TextMeshProUGUI mesafeText; // 🏁 Mesafeyi gösterecek UI Text
+    private float baslangicZ;
+    private float oncekiAltinMesafesi; // 💰 Altın kazanma için önceki mesafeyi takip edecek
+
+    public TextMeshProUGUI mesafeText;
+    public TextMeshProUGUI altinText; // 💰 UI için Altın Text 
+
+    private int altin = 0; // 💰 Altın miktarı
 
     void Start()
     {
         yPozisyonu = transform.position.y;
         previousZPosition = transform.position.z;
-        baslangicZ = transform.position.z; // Başlangıç Z pozisyonunu kaydet
+        baslangicZ = transform.position.z;
+        oncekiAltinMesafesi = baslangicZ; // 💰 Altın mesafesini başlangıca ayarla
 
         transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+        GuncelleUI(); // 🎮 UI'yı başlat
     }
 
     void Update()
@@ -68,5 +75,18 @@ public class ucakhareket : MonoBehaviour
         // 🚀 **Mesafeyi Güncelle ve UI'ye Yazdır**
         float katEdilenMesafe = transform.position.z - baslangicZ;
         mesafeText.text = katEdilenMesafe.ToString("F1") + " m";
+
+        // 💰 **Altın Kazanımı**
+        if (transform.position.z - oncekiAltinMesafesi >= 10f)
+        {
+            altin += 10;
+            oncekiAltinMesafesi = transform.position.z;
+            GuncelleUI();
+        }
+    }
+
+    void GuncelleUI()
+    {
+        altinText.text = "Altın: " + altin;
     }
 }
